@@ -111,7 +111,77 @@ paths:
         "404":
           description: "не найдена промоакция с переданным id"
   
-
+  /promo/{id}/participant:
+    post:
+      tags:
+      - "promo"
+      summary: "Добавление участника в акцию"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id промоакции"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "JSON-описание нового участника"
+        required: true
+        schema:
+          $ref: "#/definitions/InputParticipant"
+      responses:
+        "201":
+          description: "успешно, возвращается id участника"
+        "422":
+          description: "не все обязательные поля заполнены"
+          
+  /promo/{id}/participant/{participant_id}:
+    delete:
+      tags:
+      - "promo"
+      summary: "Удаление участника в акцию"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id промоакции"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "participant_id"
+        in: "path"
+        description: "id учатника"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "успешно"
+        "404":
+          description: "не найдено"
+  /promo/{id}/prize:
+    post:
+      tags:
+      - "promo"
+      summary: "Добавление приза в акцию"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id промоакции"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        description: "JSON-описание нового приза"
+        required: true
+        schema:
+          $ref: "#/definitions/InputPrize"
+      responses:
+        "201":
+          description: "успешно, возвращается id приза"
+        "422":
+          description: "не все обязательные поля заполнены"
+  
 definitions:
   InputPrize:
     type: "object"
