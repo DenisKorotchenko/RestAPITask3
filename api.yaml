@@ -1,0 +1,173 @@
+swagger: "2.0"
+info:
+  description: "API сервиса для проведения лотерей. Создано в рамках олимпиады Я.Профессионал"
+  version: "1.0"
+  title: "Raffle"
+host: "localhost:8080"
+tags:
+- name: "promo"
+  description: "Доступ к управлению функционалом лотерей"
+schemes:
+- "http"
+paths:
+  /promo:
+    post:
+      tags:
+      - "promo"
+      summary: "Добавление промоакции"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "text/plain; charset=utf-8"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "JSON-описание создаваемой промоакции"
+        required: true
+        schema:
+          $ref: "#/definitions/InputPromo"
+      responses:
+        "201":
+          description: "Успешное создание. Возвращается id созданной промоакции"
+        "422":
+          description: "Пропущены обязательные поля"  
+    get:
+      tags:
+      - "promo"
+      summary: "Просмотр всех имеющихся промоакций"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          schema:
+            type: "array"
+            items:
+              $ref : '#/definitions/SmallPromo'
+  /promo/{id}:
+    get:
+      tags:
+      - "promo"
+      summary: "Просмотр полных сведений о промоакции"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id промоакции"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "успешно"
+          schema:
+            $ref: '#/definitions/FullPromo'
+        "404":
+          description: "не найдена промоакция с переданным id"
+    put:
+      tags:
+      - "promo"
+      summary: "Редактирование промоакции"
+      consumes:
+      - "application/json"
+      produces:
+      - "text/plain; charset=utf-8"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "JSON-описание новых данных промоакции"
+        required: true
+        schema:
+          $ref: "#/definitions/InputPromo"
+      - name: "id"
+        in: "path"
+        description: "id промоакции"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Успешное редактирование"
+        "422":
+          description: "Пропущены обязательные поля"
+    delete:
+      tags:
+      - "promo"
+      summary: "Удаление промоакции"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id промоакции"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "204":
+          description: "успешно"
+          schema:
+            $ref: '#/definitions/FullPromo'
+        "404":
+          description: "не найдена промоакция с переданным id"
+  
+
+definitions:
+  InputPrize:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+  InputParticipant:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+  Prize:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      description:
+        type: "string"
+  Participant:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+  InputPromo:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
+  SmallPromo:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      description:
+        type: "string"
+  FullPromo:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      prizes:
+        type: "array"
+        items:
+          $ref: '#/definitions/Prize'
+      participants:
+        type: "array"
+        items:
+          $ref: '#/definitions/Participant'
+    
